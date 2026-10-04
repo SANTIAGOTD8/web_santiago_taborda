@@ -43,11 +43,9 @@ export class BackendService {
     });
     return this.http.get<T>(`${urlApi}/${endpoint}/${service}`, {
       params: routerParams,
-      headers: headers,
-      withCredentials: true,
+      headers: headers
     });
   }
-
 
   // Servicio generico para realizar peticiones POST al backend.
   post<T>(
@@ -63,8 +61,7 @@ export class BackendService {
       Authorization: tokenRecuperado ? `Bearer ${tokenRecuperado}` : '',
     });
     return this.http.post<T>(`${urlApi}/${endpoint}/${service}`, data, {
-      headers: headers,
-      withCredentials: true,
+      headers: headers
     });
   }
 
@@ -100,8 +97,7 @@ export class BackendService {
       Authorization: tokenRecuperado ? `Bearer ${tokenRecuperado}` : '',
     });
     return this.http.post<T>(`${urlApi}/${endpoint}/${service}`, data, {
-      headers: headers,
-      withCredentials: true,
+      headers: headers
     });
   }
 }

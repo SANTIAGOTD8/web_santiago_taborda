@@ -1,1 +1,53 @@
-<p>formula-medica works!</p>
+<div class="container mt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Gestión de Fórmulas Médicas</h3>
+    <button class="btn btn-primary" (click)="abrirModalAgregar(modalItem)">+ Agregar fórmula</button>
+  </div>
+
+  <div *ngIf="cargando">Cargando...</div>
+
+  <table class="table table-striped" *ngIf="!cargando">
+    <thead>
+      <tr><th>ID</th><th>Mascota</th><th>Médico</th><th>Fecha</th><th>Observaciones</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let f of registros">
+        <td>{{ f.id }}</td>
+        <td>{{ f.mascota?.nombreMascota || f.mascota?.mascotaId }}</td>
+        <td>{{ f.medico?.nombres || f.medico?.id }}</td>
+        <td>{{ f.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>{{ f.observaciones }}</td>
+        <td><button class="btn btn-sm btn-outline-secondary" (click)="abrirModalEditar(modalItem, f)">Editar</button></td>
+      </tr>
+      <tr *ngIf="registros.length === 0"><td colspan="6" class="text-center">No hay fórmulas registradas</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #modalItem let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ editando ? 'Editar' : 'Agregar' }} fórmula médica</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-danger" *ngIf="mensajeError">{{ mensajeError }}</div>
+    <form [formGroup]="form">
+      <div class="mb-3">
+        <label class="form-label">ID de la mascota</label>
+        <input type="number" class="form-control" formControlName="mascotaId">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">ID del médico</label>
+        <input type="number" class="form-control" formControlName="medicoId">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Observaciones</label>
+        <textarea class="form-control" formControlName="observaciones"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Cancelar</button>
+    <button class="btn btn-primary" (click)="guardar(modal)">Guardar</button>
+  </div>
+</ng-template>
